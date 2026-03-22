@@ -662,7 +662,7 @@
       <li><a href="#tokenomics">代币经济</a></li>
       <li><a href="#cta" class="btn-nav">立即加入</a></li>
     </ul>
-    <div class="hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+    <div class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" role="button" tabindex="0">
       <span></span><span></span><span></span>
     </div>
   </nav>
@@ -885,30 +885,30 @@
       <div class="footer-col">
         <h4>产品</h4>
         <ul>
-          <li><a href="#">区块浏览器</a></li>
-          <li><a href="#">Shell Wallet</a></li>
-          <li><a href="#">跨链桥</a></li>
-          <li><a href="#">DeFi 生态</a></li>
+          <li><a href="#" aria-disabled="true" role="link">区块浏览器</a></li>
+          <li><a href="#" aria-disabled="true" role="link">Shell Wallet</a></li>
+          <li><a href="#" aria-disabled="true" role="link">跨链桥</a></li>
+          <li><a href="#" aria-disabled="true" role="link">DeFi 生态</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <h4>开发者</h4>
         <ul>
-          <li><a href="#">开发文档</a></li>
-          <li><a href="#">GitHub</a></li>
-          <li><a href="#">测试网</a></li>
-          <li><a href="#">漏洞赏金</a></li>
+          <li><a href="#" aria-disabled="true" role="link">开发文档</a></li>
+          <li><a href="#" aria-disabled="true" role="link">GitHub</a></li>
+          <li><a href="#" aria-disabled="true" role="link">测试网</a></li>
+          <li><a href="#" aria-disabled="true" role="link">漏洞赏金</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <h4>社区</h4>
         <ul>
-          <li><a href="#">Discord</a></li>
-          <li><a href="#">Twitter / X</a></li>
-          <li><a href="#">Telegram</a></li>
-          <li><a href="#">博客</a></li>
+          <li><a href="#" aria-disabled="true" role="link">Discord</a></li>
+          <li><a href="#" aria-disabled="true" role="link">Twitter / X</a></li>
+          <li><a href="#" aria-disabled="true" role="link">Telegram</a></li>
+          <li><a href="#" aria-disabled="true" role="link">博客</a></li>
         </ul>
       </div>
     </div>
@@ -916,10 +916,10 @@
     <div class="footer-bottom">
       <span>© 2026 Shell Chain. 保留所有权利。</span>
       <div class="socials">
-        <a href="#" title="Twitter/X" aria-label="Twitter">𝕏</a>
-        <a href="#" title="Discord" aria-label="Discord">💬</a>
-        <a href="#" title="Telegram" aria-label="Telegram">✈</a>
-        <a href="#" title="GitHub" aria-label="GitHub">⌥</a>
+        <a href="#" aria-disabled="true" title="Twitter/X" aria-label="Twitter">𝕏</a>
+        <a href="#" aria-disabled="true" title="Discord" aria-label="Discord">💬</a>
+        <a href="#" aria-disabled="true" title="Telegram" aria-label="Telegram">✈</a>
+        <a href="#" aria-disabled="true" title="GitHub" aria-label="GitHub">⌥</a>
       </div>
     </div>
   </div>
@@ -945,7 +945,7 @@
   document.getElementById('subscribeBtn').addEventListener('click', () => {
     const email = document.getElementById('emailInput').value.trim();
     const msg   = document.getElementById('subMsg');
-    if (!email || !email.includes('@')) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       document.getElementById('emailInput').style.borderColor = '#f87171';
       return;
     }
@@ -956,22 +956,32 @@
   });
 
   // ── Hamburger menu (mobile) ──
-  document.getElementById('hamburger').addEventListener('click', function() {
-    const links = document.querySelector('.nav-links');
-    if (links.style.display === 'flex') {
-      links.style.display = '';
-    } else {
-      Object.assign(links.style, {
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.querySelector('.nav-links');
+  let menuOpen = false;
+
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    hamburger.setAttribute('aria-expanded', menuOpen);
+    if (menuOpen) {
+      Object.assign(navLinks.style, {
         display: 'flex',
         flexDirection: 'column',
         position: 'absolute',
-        top: '64px', left: 0, right: 0,
+        top: '64px', left: '0', right: '0',
         background: 'rgba(10,12,20,.97)',
         padding: '20px 24px',
         borderBottom: '1px solid #1e2540',
         gap: '20px'
       });
+    } else {
+      navLinks.removeAttribute('style');
     }
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+  hamburger.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMenu(); }
   });
 </script>
 </body>
